@@ -5,12 +5,20 @@ import java.awt.event.ActionListener;
 
 public class Story implements ActionListener{
 
-
+    int posX = 3;
+    int posY = 4;
     JFrame map = new JFrame("Map");
     JButton rightButton = new JButton("→");
     JButton leftButton =  new JButton("←");
     JButton upButton =  new JButton("↑");
     JButton downButton = new JButton("↓");
+
+    JFrame startMsg = new JFrame("Wakey Wakey!");
+    //formatting off, use html <br fro line breaks
+    JLabel start = new JLabel("You wake up dazed and disoriented. All but he emergency lights have been  turned off in your submersible\n" +
+                                    "and you don't know how long you have been asleep. The water is dark and heavy around you. Indiscernible \n" +
+                                    "shapes just out at you from the darkness. But the mission must be completed. You must explore these ruins \n" +
+                                    "and find out what happened before your world meets the same watery fate. ");
     JButton [][] board = new JButton[20][20];
 
     String [][] walls =  new String[20][20];
@@ -44,6 +52,10 @@ public class Story implements ActionListener{
         upContainer.add(upButton);
         downContainer.add(downButton);
 
+        startMsg.setLayout(new BorderLayout());
+        startMsg.setSize(400, 400);
+        startMsg.add(start);
+
         buildMap();
 
         for (int row = 0; row <board.length; row++){
@@ -55,25 +67,22 @@ public class Story implements ActionListener{
             }
         }
 
+
         map.add(rightContainer, BorderLayout.EAST);
         map.add(leftContainer, BorderLayout.WEST);
         map.add(upContainer, BorderLayout.NORTH);
         map.add(downContainer, BorderLayout.SOUTH);
         map.add(boardContainer, BorderLayout.CENTER);
 
-        /*for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 9; j++) {
-
-            }
-
-        }*/
-
         map.setVisible(true);
-
 
     }
 
+
     public void buildMap() {
+        startMsg.setVisible(true);
+
+
         //main border
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
@@ -86,6 +95,10 @@ public class Story implements ActionListener{
                 }
             }
         }
+
+        //person
+        walls [posX][posY] = "★";
+
         //room 1
         for(int i = 1; i<9; i++){
                 walls[6][i] = "⎯";
@@ -147,14 +160,75 @@ public class Story implements ActionListener{
         walls [13][14] = " ┛";
         walls [17][9] = " ";
         walls [13][16] = "┗";
-        //walls [9][5] = "┗";
-
+        walls [16][9] = "┛";
         walls [13][9] = "┏";
 
+        //room 5
+        for (int i = 1; i <8; i++) {
+            walls[14][i] = "⎯";
+        }
 
+        for (int i = 14; i <19; i++) {
+            walls[i][7] = "|";
+            }
+
+        walls [14][7] = "┓";
+        walls [16][7] = "┗";
+        walls [18][7] = "┏";
+        walls [17][7] = " ";
+
+        //halls
+        walls [7][2] = "|";
+        walls [7][4] = "|";
+        walls [12][14] = "|";
+        walls [12][16] = "|";
+
+        walls [3][9] = "⎯";
+        walls [5][9] = "⎯";
+        walls [16][8] = "⎯";
+        walls [18][8] = "⎯";
+
+        for (int i = 6; i <11; i++) {
+            walls[9][i] = "⎯";
+        }
     }
 
     public void actionPerformed(ActionEvent e){
+
+        if (e.getSource().equals(rightButton)){
+            if (walls[posX][posY +1].equals(" ")){
+                walls[posX][posY] = " ";
+                board[posX][posY].setText(" ");
+                posY = posY+1;
+                board[posX][posY].setText("★");
+            }
+        }
+
+        if (e.getSource().equals(leftButton)){
+            if (walls[posX][posY -1].equals(" ")){
+                walls[posX][posY] = " ";
+                board[posX][posY].setText(" ");
+                posY = posY-1;
+                board[posX][posY].setText("★");
+            }
+        }
+
+        if (e.getSource().equals(upButton)){
+            if (walls[posX -1][posY].equals(" ")){
+                walls[posX][posY] = " ";
+                board[posX][posY].setText(" ");
+                posX = posX-1;
+                board[posX][posY].setText("★");
+            }
+        }
+        if (e.getSource().equals(downButton)){
+            if (walls[posX+1][posY].equals(" ")){
+                walls[posX][posY] = " ";
+                board[posX][posY].setText(" ");
+                posX = posX+1;
+                board[posX][posY].setText("★");
+            }
+        }
 
     }
 }
