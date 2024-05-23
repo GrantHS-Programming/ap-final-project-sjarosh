@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,19 +7,36 @@ import java.awt.event.ActionListener;
 public class Story implements ActionListener{
 
     int posX = 3;
-    int posY = 4;
+    int posY = 3;
     JFrame map = new JFrame("Map");
     JButton rightButton = new JButton("→");
     JButton leftButton =  new JButton("←");
     JButton upButton =  new JButton("↑");
     JButton downButton = new JButton("↓");
 
+    //start message
     JFrame startMsg = new JFrame("Wakey Wakey!");
-    //formatting off, use html <br fro line breaks
-    JLabel start = new JLabel("You wake up dazed and disoriented. All but he emergency lights have been  turned off in your submersible\n" +
-                                    "and you don't know how long you have been asleep. The water is dark and heavy around you. Indiscernible \n" +
-                                    "shapes just out at you from the darkness. But the mission must be completed. You must explore these ruins \n" +
-                                    "and find out what happened before your world meets the same watery fate. ");
+    JLabel start = new JLabel("<html>You wake up dazed and disoriented. All but the emergency lights have been  turned off in your submersible " +
+                                    "and you don't know how long you have been asleep. The water is dark and heavy around you. Indiscernible " +
+                                    "shapes just out at you from the darkness. But the mission must be completed. You must explore these ruins " +
+                                    "and find out what happened before your world meets the same watery fate. Just be sure to take care...");
+
+    //scroll
+    JFrame scrollMsg = new JFrame("A Message for Those Who Remain...");
+    JLabel scroll = new JLabel("<html> 'The water rises. We cannot stop it and we have made our peace... Those who could have already left" +
+            "while we, the Historians remain to preserve what we can. <s>Please</s> If you are reading this, there is time to turn back yet. Soon" +
+            "it will be too late. The beast wakens...' <br><br> You stare at the message with a sinking feeling in your stomach. But the orders are" +
+            "clear. You must press on.");
+    boolean scRead = false;
+
+    //armory
+    JFrame armoryMsg =  new JFrame("Arm Yourself");
+    JLabel armory = new JLabel("<html>As your flashlight beam slices through the shadows of the small room something flashes. Bright. Reflective. " +
+            "Like metal. You approach it gingerly. You job is to document, to record, but surely a little hands on investigation wouldn't hurt. " +
+            "A metal chest is slightly open, the hilt of a sword is just visible. Do you open it (y/n)?");
+    boolean armed = false;
+
+
     JButton [][] board = new JButton[20][20];
 
     String [][] walls =  new String[20][20];
@@ -52,9 +70,7 @@ public class Story implements ActionListener{
         upContainer.add(upButton);
         downContainer.add(downButton);
 
-        startMsg.setLayout(new BorderLayout());
-        startMsg.setSize(400, 400);
-        startMsg.add(start);
+
 
         buildMap();
 
@@ -75,6 +91,24 @@ public class Story implements ActionListener{
         map.add(boardContainer, BorderLayout.CENTER);
 
         map.setVisible(true);
+
+        startMsg.setLayout(new BorderLayout());
+        startMsg.setSize(400, 200);
+        start.setBorder(new EmptyBorder(0,10,0,0));
+        startMsg.add(start);
+        startMsg.setVisible(true);
+
+        scrollMsg.setLayout(new BorderLayout());
+        scrollMsg.setSize(400, 200);
+        scroll.setBorder(new EmptyBorder(0,10,0,0));
+        scrollMsg.add(scroll);
+
+        armoryMsg.setLayout(new BorderLayout());
+        armoryMsg.setSize(400, 200);
+        armory.setBorder(new EmptyBorder(0,10,0,0));
+        armoryMsg.add(armory);
+
+
 
     }
 
@@ -228,6 +262,14 @@ public class Story implements ActionListener{
                 posX = posX+1;
                 board[posX][posY].setText("★");
             }
+        }
+        if (posX == 2 && posY == 5 && !scRead){
+            scrollMsg.setVisible(true);
+            scRead = true;
+        }
+        if (posX == 10 && posY == 2 && !armed){
+            armoryMsg.setVisible(true);
+            armed = true;
         }
 
     }
