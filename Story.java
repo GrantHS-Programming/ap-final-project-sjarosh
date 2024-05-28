@@ -3,11 +3,16 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class Story implements ActionListener{
 
     int posX = 3;
     int posY = 3;
+
+    int roomPos = 0;
+
+    String room = " ";
     JFrame map = new JFrame("Map");
     JButton rightButton = new JButton("→");
     JButton leftButton =  new JButton("←");
@@ -23,23 +28,30 @@ public class Story implements ActionListener{
 
     //scroll
     JFrame scrollMsg = new JFrame("A Message for Those Who Remain...");
-    JLabel scroll = new JLabel("<html> 'The water rises. We cannot stop it and we have made our peace... Those who could have already left" +
+    JLabel scroll = new JLabel("<html> 'The water rises. We cannot stop it and we have made our peace... Those who could have already left, " +
             "while we, the Historians remain to preserve what we can. <s>Please</s> If you are reading this, there is time to turn back yet. Soon" +
-            "it will be too late. The beast wakens...' <br><br> You stare at the message with a sinking feeling in your stomach. But the orders are" +
-            "clear. You must press on.");
+            " it will be too late. The beast wakens...' <br><br> You stare at the message with a sinking feeling in your stomach. But the orders are" +
+            " clear. You must press on.");
     boolean scRead = false;
 
     //armory
     JFrame armoryMsg =  new JFrame("Arm Yourself");
-    JLabel armory = new JLabel("<html>As your flashlight beam slices through the shadows of the small room something flashes. Bright. Reflective. " +
-            "Like metal. You approach it gingerly. You job is to document, to record, but surely a little hands on investigation wouldn't hurt. " +
-            "A metal chest is slightly open, the hilt of a sword is just visible. Do you open it (y/n)?");
+    JLabel armory = new JLabel("<html> You open the chest and find that it is full of weapons. Some are corroded and rusty - exactly as you would expect" +
+            " at the bottom of the ocean. Others though, look as though they were polished just this morning. Moreover, while most of the weapons are in line" +
+            " with what your archeologists knew of the Nymstravt, others look strange and otherworldly. They look like they have no business being here in" +
+            " a forgotten corner of a drowned civilization. Which weapon do you chose (axe/ sword/ pistol)?");
     boolean armed = false;
 
+    JFrame inventoryMsg = new JFrame("Inventory");
+    ArrayList<String> inventoryList =  new ArrayList<>();
+
+    JLabel inventory = new JLabel("<html>You are in " + room + "<br> You have a(n)");
 
     JButton [][] board = new JButton[20][20];
 
     String [][] walls =  new String[20][20];
+
+    String [] rooms = new String[5];
 
     public static void main (String[]args){
         new Story();
@@ -104,11 +116,14 @@ public class Story implements ActionListener{
         scrollMsg.add(scroll);
 
         armoryMsg.setLayout(new BorderLayout());
-        armoryMsg.setSize(400, 200);
+        armoryMsg.setSize(0, 0);
         armory.setBorder(new EmptyBorder(0,10,0,0));
         armoryMsg.add(armory);
 
-
+        inventoryMsg.setLayout(new BorderLayout());
+        inventoryMsg.setSize(400, 200);
+        inventory.setBorder(new EmptyBorder(0,10,0,0));
+        inventoryMsg.add(inventory);
 
     }
 
@@ -225,6 +240,20 @@ public class Story implements ActionListener{
         for (int i = 6; i <11; i++) {
             walls[9][i] = "⎯";
         }
+
+        //arraylist / array with rooms, room pos variable to change in jlabel.
+        if (posX< 6 && posY <8 ){String room1 ="the room you arrive in. Your submersible is tethered a few meters away, its lights illuminating the craggy walls and overgrown " +
+                "rock of what seems to have once been a medium sized antechamber. ";
+
+            roomPos = 0;}
+
+        else if (posX < 11 && posY >10 ){ room = "the ballroom. The walls are lined with sconces that haven't held a torch in decades. You feel strange whispers and flickers" +
+                "at the edges of your senses, but can't find anything concrete. Every once in a while, it sounds like someone is wailing. ";}
+        else if (posX < 11 && posX > 8 && posY <5 ){ room = "the armory. Weapons are scattered haphazardly around the room in varying states of decay. A chest is in the " +
+                "corner and little fish swim in and out of the visor of suit of armor. ";}
+        else if (posX > 13  && posY >9 ){ room = "test";}
+        else if (posX > 15  && posY <7 ){ room = "test";}
+        else{room = "a hallway";}
     }
 
     public void actionPerformed(ActionEvent e){
@@ -236,7 +265,7 @@ public class Story implements ActionListener{
                 posY = posY+1;
                 board[posX][posY].setText("★");
             }
-        }
+        } // right
 
         if (e.getSource().equals(leftButton)){
             if (walls[posX][posY -1].equals(" ")){
@@ -245,7 +274,7 @@ public class Story implements ActionListener{
                 posY = posY-1;
                 board[posX][posY].setText("★");
             }
-        }
+        } // left
 
         if (e.getSource().equals(upButton)){
             if (walls[posX -1][posY].equals(" ")){
@@ -254,7 +283,8 @@ public class Story implements ActionListener{
                 posX = posX-1;
                 board[posX][posY].setText("★");
             }
-        }
+        } // up
+
         if (e.getSource().equals(downButton)){
             if (walls[posX+1][posY].equals(" ")){
                 walls[posX][posY] = " ";
@@ -262,15 +292,39 @@ public class Story implements ActionListener{
                 posX = posX+1;
                 board[posX][posY].setText("★");
             }
-        }
+        } // down
+
         if (posX == 2 && posY == 5 && !scRead){
             scrollMsg.setVisible(true);
             scRead = true;
-        }
-        if (posX == 10 && posY == 2 && !armed){
-            armoryMsg.setVisible(true);
-            armed = true;
-        }
+        } // scroll
 
+        if (posX == 10 && posY == 2 && !armed){
+
+            String choiceA = JOptionPane.showInputDialog(armory, "As your flashlight beam slices through the shadows of the small room, something flashes. Bright. Reflective.\n" +
+                    "Like metal. You approach it gingerly. You job is to document, to record, but surely a little hands on investigation wouldn't hurt. \n" +
+                    "A metal chest lies slightly open, the hilt of a sword is just visible. Do you open it (y/n)?", "Arm Yourself", JOptionPane.OK_CANCEL_OPTION);
+            if (choiceA.equals("y")){
+                armoryMsg.setVisible(true);
+                String choiceB = JOptionPane.showInputDialog(armory, "You open the chest and find that it is full of weapons. Some are corroded and rusty - exactly as you would expect\n" +
+                        " at the bottom of the ocean. Others though, look as though they were polished just this morning. Moreover, while most of the weapons are in line\n" +
+                        " with what your archeologists knew of the Nymstravt, others look strange and otherworldly. They look like they have no business being here in \n" +
+                        " a forgotten corner of a drowned civilization. Which weapon do you chose (axe/ sword/ pistol)?", "Arm Yourself", JOptionPane.OK_CANCEL_OPTION);
+                if (choiceB.equals("axe")){
+                    inventoryList.add("axe");
+                }
+                if (choiceB.equals("sword")){
+                    inventoryList.add("sword");
+                }
+                if (choiceB.equals("pistol")){
+                    inventoryList.add("pistol");
+                }
+            }
+            armed = true;
+        } // armory
+
+        if (e.getSource().equals(board[posX][posY])){
+            inventoryMsg.setVisible(true);
+        }
     }
 }
