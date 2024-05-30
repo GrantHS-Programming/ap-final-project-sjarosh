@@ -7,12 +7,13 @@ import java.util.ArrayList;
 
 public class Story implements ActionListener{
 
-    int posX = 3;
-    int posY = 3;
+    int posX = 9;
+    int posY = 13;
 
     int roomPos = 0;
+    int weapon = 0;
 
-    String room = " ";
+    String room;
     JFrame map = new JFrame("Map");
     JButton rightButton = new JButton("→");
     JButton leftButton =  new JButton("←");
@@ -40,24 +41,68 @@ public class Story implements ActionListener{
             " at the bottom of the ocean. Others though, look as though they were polished just this morning. Moreover, while most of the weapons are in line" +
             " with what your archeologists knew of the Nymstravt, others look strange and otherworldly. They look like they have no business being here in" +
             " a forgotten corner of a drowned civilization. Which weapon do you chose (axe/ sword/ pistol)?");
+
+    JFrame ghost1Msg = new JFrame ("A Strange Encounter");
+    JLabel ghosty1 =  new JLabel ("<html> A sudden cold spell set you shivering. You whip around and find yourself face to face with a translucent, floating" +
+            " <i> thing </i>. It's dressed strangely, archaic diving suit ripped and face plate shattered to reveal a rictus grin. Its voice is ragged, half-drowned. " +
+            "<br><br> <i> I see you have not heeded the warnings... You meddle in things that you do not understand... You wish to know what happened here? Very well. I " +
+            "tell you. <br> We were attacked. A vicious attack. Unrelenting. And so we fled, scattered among the stars, all of us, except those few unfortunate souls..." +
+            "Now GET OUT!!! </i><br><br> You stumble backwards and when you regain your composure, the ghost is gone. ");
+    JFrame ghost1v2Msg = new JFrame ("A Strange Encounter");
+    JLabel ghosty1v2 =  new JLabel ("<html> A sudden cold spell set you shivering. You whip around and find yourself face to face with a translucent, floating" +
+            " <i> thing </i>. It's dressed strangely, archaic diving suit ripped and face plate shattered to reveal a rictus grin. Its voice is ragged, half-drowned. " +
+            "<br><br> <i> You seem to have something that doesn't belong to you, </i> the ghost says, gesturing to the sword gripped in your hand. <i> It is mine, meddler," +
+            "and you shall not have it...<br><br></i> You stumble backwards as an icy cold grips your hand. You feel it through your diving suit, colder than the freezing water." +
+            "You drop the sword and when you regain your composure the ghost is gone. ");
+
     boolean armed = false;
+    boolean ghost1 = false;
+    int health = 100;
 
     JFrame inventoryMsg = new JFrame("Inventory");
     ArrayList<String> inventoryList =  new ArrayList<>();
 
-    JLabel inventory = new JLabel("<html>You are in " + room + "<br> You have a(n)");
+    String [] rooms = new String[5];
 
     JButton [][] board = new JButton[20][20];
 
     String [][] walls =  new String[20][20];
 
-    String [] rooms = new String[5];
+
 
     public static void main (String[]args){
         new Story();
     }
 
     public Story() {
+        //inventory variables aren't changing :(
+        inventoryList.add("You don't have any items yet.");
+        if (posX< 6 && posY <8 ){String room1 ="the room you arrived in. Your submersible is tethered a few meters away, its lights illuminating the craggy walls and overgrown " +
+                "rock of what seems to have once been a medium sized antechamber. ";
+            rooms[0] = room1;
+            roomPos = 0;
+        }
+        else if (posX < 11 && posY >10 ){ String room2 = "the ballroom. The walls are lined with sconces that haven't held a torch in decades. You feel strange whispers and flickers" +
+                "at the edges of your senses, but can't find anything concrete. Every once in a while, it sounds like someone is wailing. ";
+            rooms[1] = room2;
+            roomPos = 1;
+        }
+        else if (posX < 11 && posX > 8 && posY <5 ){ String room3 = "the armory. Weapons are scattered haphazardly around the room in varying states of decay. A chest is in the " +
+                "corner and little fish swim in and out of the visor of suit of armor. ";
+            rooms[2] = room3;
+            roomPos = 2;
+        }
+        else if (posX > 13  && posY >9 ){ String room4 = "test";
+            rooms[3] = room4;
+            roomPos = 3;
+        }
+        else if (posX > 15  && posY <7 ){ String room5 = "test";
+            rooms[4] = room5;
+            roomPos = 4;
+        }
+        else{room = "a hallway";}
+        JLabel inventory = new JLabel("<html>You are in " + rooms[roomPos] + "<br><br>" + inventoryList.get(0) + "<br><br> Your health is at " + health + "%");
+
         map.setLayout(new BorderLayout());
         map.setSize(800,800);
         map.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -124,6 +169,16 @@ public class Story implements ActionListener{
         inventoryMsg.setSize(400, 200);
         inventory.setBorder(new EmptyBorder(0,10,0,0));
         inventoryMsg.add(inventory);
+
+        ghost1Msg.setLayout(new BorderLayout());
+        ghost1Msg.setSize(450, 300);
+        ghosty1.setBorder(new EmptyBorder(0,10,0,0));
+        ghost1Msg.add(ghosty1);
+
+        ghost1v2Msg.setLayout(new BorderLayout());
+        ghost1v2Msg.setSize(450, 300);
+        ghosty1v2.setBorder(new EmptyBorder(0,10,0,0));
+        ghost1v2Msg.add(ghosty1v2);
 
     }
 
@@ -242,18 +297,7 @@ public class Story implements ActionListener{
         }
 
         //arraylist / array with rooms, room pos variable to change in jlabel.
-        if (posX< 6 && posY <8 ){String room1 ="the room you arrive in. Your submersible is tethered a few meters away, its lights illuminating the craggy walls and overgrown " +
-                "rock of what seems to have once been a medium sized antechamber. ";
 
-            roomPos = 0;}
-
-        else if (posX < 11 && posY >10 ){ room = "the ballroom. The walls are lined with sconces that haven't held a torch in decades. You feel strange whispers and flickers" +
-                "at the edges of your senses, but can't find anything concrete. Every once in a while, it sounds like someone is wailing. ";}
-        else if (posX < 11 && posX > 8 && posY <5 ){ room = "the armory. Weapons are scattered haphazardly around the room in varying states of decay. A chest is in the " +
-                "corner and little fish swim in and out of the visor of suit of armor. ";}
-        else if (posX > 13  && posY >9 ){ room = "test";}
-        else if (posX > 15  && posY <7 ){ room = "test";}
-        else{room = "a hallway";}
     }
 
     public void actionPerformed(ActionEvent e){
@@ -311,20 +355,34 @@ public class Story implements ActionListener{
                         " with what your archeologists knew of the Nymstravt, others look strange and otherworldly. They look like they have no business being here in \n" +
                         " a forgotten corner of a drowned civilization. Which weapon do you chose (axe/ sword/ pistol)?", "Arm Yourself", JOptionPane.OK_CANCEL_OPTION);
                 if (choiceB.equals("axe")){
-                    inventoryList.add("axe");
+                    inventoryList.add(0,"You have an axe");
+                    weapon = 1;
                 }
                 if (choiceB.equals("sword")){
-                    inventoryList.add("sword");
+                    inventoryList.add(0, "You have a sword");
+                    weapon = 2;
                 }
                 if (choiceB.equals("pistol")){
-                    inventoryList.add("pistol");
+                    inventoryList.add(0, "You have a pistol");
+                    weapon = 3;
                 }
             }
             armed = true;
         } // armory
 
+        if (posX == 8 && posY == 13 && !ghost1){
+            if (weapon == 2){
+                ghost1v2Msg.setVisible(true);
+                health -= 20;
+            }
+            else{
+                ghost1Msg.setVisible(true);
+            }
+            ghost1 = true;
+        } //ghost 1
+
         if (e.getSource().equals(board[posX][posY])){
             inventoryMsg.setVisible(true);
-        }
+        } // inventory
     }
 }
