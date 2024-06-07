@@ -54,7 +54,7 @@ public class Story implements ActionListener{
             "and you shall not have it...<br><br></i> You stumble backwards as an icy cold grips your hand. You feel it through your diving suit, colder than the freezing water." +
             "You drop the sword and when you regain your composure the ghost is gone. ");
     JFrame fightMsg =  new JFrame("An Unpleasant Encounter");
-    JLabel fight =  new JLabel();
+    JLabel fight =  new JLabel(" ");
 
     JFrame ghost2Msg = new JFrame("An Illuminating Encounter");
     JLabel ghosty2 = new JLabel("<html>A chill runs down your spine and the hairs on the back of your neck stand up. A moment later something appears in front of" +
@@ -107,23 +107,6 @@ public class Story implements ActionListener{
         String room5 = "the war room. Or at least what used to be the war room. A long table rotted through sits in its center, the remains of chairs surrounding" +
                 " it like gravestones. You thing there might have once been paintings on the walls, but its hard to tell.";
         rooms[4] = room5;
-        if (posX< 6 && posY <8 ){
-            roomPos = 0;
-        }
-        if (posX < 11 && posY >10 ){
-            roomPos = 1;
-        }
-        if (posX < 11 && posX > 8 && posY <5 ){
-            roomPos = 2;
-        }
-        if (posX > 13  && posY >9 ){
-            roomPos = 3;
-        }
-        else if (posX > 15  && posY <7 ){
-            roomPos = 4;
-        }
-        else{room = "a hallway";}
-        //JLabel inventory = new JLabel();
 
         map.setLayout(new BorderLayout());
         map.setSize(800,800);
@@ -188,7 +171,7 @@ public class Story implements ActionListener{
         armoryMsg.add(armory);
 
         fightMsg.setLayout(new BorderLayout());
-        fightMsg.setSize(400, 300);
+        fightMsg.setSize(400, 400);
         fight.setBorder(new EmptyBorder(0,10,0,0));
         fightMsg.add(fight);
 
@@ -333,7 +316,7 @@ public class Story implements ActionListener{
 
     public void actionPerformed(ActionEvent e){
         int health = 100;
-        //why isn't health changing in loops wtf?
+        inventoryList.add(" "+health);
 
         if (e.getSource().equals(rightButton)){
             if (walls[posX][posY +1].equals(" ")){
@@ -403,7 +386,7 @@ public class Story implements ActionListener{
             armed = true;
         } // armory
 
-        if (posX == 3 && posY ==12 && !fought && armed){
+        if (posX == 3 && posY ==12 && !fought){
             fought = true;
             String fightIntro = JOptionPane.showInputDialog(fight, "<html>You feel something snag your shoulder, cold and rasping on the thick fabric of your diving suit." +
                     " Your flashlight illuminates nothing but cold blue water and the occasional rotting wood for meters in all directions. Slowly you turn around to face a - " +
@@ -411,39 +394,42 @@ public class Story implements ActionListener{
                     "What do you say (y/n)?","An Unpleasant Encounter", JOptionPane.OK_CANCEL_OPTION);
             if (fightIntro.equals("y") && (inventoryList.get(0).equals("You have an axe")||(inventoryList.get(0).equals("You have a sword")||(inventoryList.get(0).equals("You have a pistol"))))){
                 String drawChoice = JOptionPane.showInputDialog(fight, "<html> <i> Ah, a thief! How delightful! </i> the not-quite-human ghost gushes. It sets your teeth" +
-                        "non edge. <br><br> Do you draw your weapon (y/n)?","An unpleasant Encounter", JOptionPane.OK_CANCEL_OPTION);
-                System.out.println("test");
-                if (drawChoice.equals("y") && inventoryList.get(0).equals("You have pistol")){
+                        " on edge. <br><br> Do you draw your weapon (y/n)?","An unpleasant Encounter", JOptionPane.OK_CANCEL_OPTION);
+                if (drawChoice.equals("y") && inventoryList.get(0).equals("You have a pistol")){
                     fight.setText("<html> Shakily you draw the pistol you took from the armory. It was foolish to come here without a weapon, but no on expected to find anything" +
                             "even remotely alive here. For gods' sake, the whole place is buried under tons of water, nothing <i> should</i> be alive. <br><br> <i> Are you going to " +
                             "fight me, little explorer? How exciting! And with the very weapons we used to squash the Nymstravt, very exciting indeed. </i><br><br> You freeze, " +
                             "momentarily forgetting the situation. <i> The Nymstravt were attacked? </i> There's a theory you haven't heard before. <br<br> <i> No, I don't think I'll" +
                             " fight you after all, </i> the ghost says, drawing you back to the present, <i> but that really doesn't belong to you...</i><br><br> A burning cold spreads " +
-                            "through you arm and the pistol sp=lips out of grip. You feel woozy as you watch if sink into the darkness. ");
-                    System.out.println("test2");
-                    fight.setVisible(true);
+                            "through you arm and the pistol slips out of grip. You feel woozy as you watch if sink into the darkness. ");
+                    fightMsg.setVisible(true);
                     health -= 20;
+                    inventoryList.add(" " + health);
                 }
-                else if (drawChoice.equals("y") && !inventoryList.get(0).equals("You have pistol")){
-                    fight.setText("<html>Shakily, you draw your " + inventoryList.get(0) + "It was foolish to come here without a proper weapon, but no on expected to find anything" +
+                else if (drawChoice.equals("y") && !inventoryList.get(0).equals("You have a pistol")){
+                    fight.setText("<html>Shakily, you draw your weapon. It was foolish to come unarmed but no on expected to find anything" +
                             "even remotely alive here. For gods' sake, the whole place is buried under tons of water, nothing <i> should</i> be alive. <br><br> <i> Are you going to " +
                             "fight me, little explorer? How exciting! </i><br><br> Suddenly, the water around it starts to churn angrily. You can't move. <br><br><i> You DARE use those" +
                             "pigs' weapons against me? We squashed them like the bugs that they were! </i><br><br> The water around the " +inventoryList.get(0) + " starts to boil and you" +
                             "drop it quickly. And then there's something reaching <i>inside</i> you. A cold, cold something that makes you feel like you will never be warm again and you" +
                             "look down to find one ghostly hand buried in your chest...");
-                    fight.setVisible(true);
+                    fightMsg.setVisible(true);
                     health -=50;
+                    inventoryList.add(" " + health);
                 }
             }
             else if (fightIntro.equals("n")&& (inventoryList.get(0).equals("You have an axe")||(inventoryList.get(0).equals("You have a sword")||(inventoryList.get(0).equals("You hava a pistol"))))){
                 fight.setText("<html> <i>  I detest liars...<br><br></i>And then there's something reaching <i>inside</i> you. A cold, cold something that makes you feel like you will never be warm again and you " +
                         "look down to find one ghostly hand buried in your chest...");
-                fight.setVisible(true);
-                health = health - 50;
+                fightMsg.setVisible(true);
+                health =- 50;
+                inventoryList.add(" " + health);
             }
             else{
                 fight.setText("<html><i>Hmmm, well that's disappointing. You might want to poke around a bit more...You might find some interesting stuff...</i>");
-                fight.setVisible(true);
+                fightMsg.setVisible(true);
+                health -=10;
+                inventoryList.add(" " + health);
             }
         } //ghost fight
 
@@ -451,6 +437,7 @@ public class Story implements ActionListener{
             if (weapon == 2){
                 ghost1v2Msg.setVisible(true);
                 health -= 20;
+                inventoryList.add(" " + health);
             }
             else{
                 ghost1Msg.setVisible(true);
@@ -462,6 +449,7 @@ public class Story implements ActionListener{
             if (weapon == 3){
                 ghost2v2Msg.setVisible(true);
                 health -= 20;
+                inventoryList.add(" " + health);
             }
             else{
                 ghost2v2Msg.setVisible(true);
@@ -469,8 +457,6 @@ public class Story implements ActionListener{
         } //ghost2
 
         if (e.getSource().equals(board[posX][posY])){
-            inventoryMsg.repaint();
-            inventoryMsg.setVisible(true);
 
             if (posX< 6 && posY <8 ){
                 roomPos = 0;
@@ -488,13 +474,19 @@ public class Story implements ActionListener{
                 roomPos = 4;
             }
             else{room = "a hallway";}
+
             JLabel inventory = new JLabel();
-            inventory.setText("<html>You are in " + rooms[roomPos] + "<br><br>" + inventoryList.get(0) + "<br><br> Your health is at " + health + "%");
-            //System.out.println(health + " " + rooms[roomPos]);
+            inventory.setText(" ");
+            String text = "<html>You are in " + rooms[roomPos] + "<br><br>" + inventoryList.get(0) + "<br><br> Your health is at " + inventoryList.get(inventoryList.size()-1) + "%";
+            inventory.setText(text);
             inventoryMsg.setLayout(new BorderLayout());
             inventoryMsg.setSize(400, 200);
             inventory.setBorder(new EmptyBorder(0,10,0,0));
             inventoryMsg.add(inventory);
+            for (int i = 0; i < inventoryList.size(); i++) {
+                System.out.println(inventoryList.get(i));
+            }
+            inventoryMsg.setVisible(true);
         } // inventory
     }
 }
